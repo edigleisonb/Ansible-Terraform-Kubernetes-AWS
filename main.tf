@@ -4,8 +4,7 @@ provider "aws" {
 
 resource "aws_key_pair" "k8s-key" {
   key_name   = "k8s-key"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzoXcKjiFHe6OTukslVcni9MdiLXkSGbU4nNkiRt27TMSdbfjWigB82twV99NyO8lOs58Fp80wtzoWKdDI/HPA5UfeT/IdTui1hFFrhBz9LCGnrrH5n46eUdPdojjEQtPTKzhqmhOvnwmWiOPvtbM6eTPszlxC0gSxpezdiZ6VPFp5ZYfxbSvvpVAhrRsPVnllLZee47eWMRh2eXlBGlVWUB7Lr5OKz8QSE1lU5HViCTF0fM+2YcRwdANQDEe7pwxB2e3+5hAsUm02X+GmGunUx/ULtMDpgWuRd4IczavY44mY2abarcCRG2c3TKHaTxcPvK1wwHlYsfNufH+IqIkL ubuntu@ubuntu-VirtualBox"
-}
+  public_key = "SSH Public Key}
 
 resource "aws_security_group" "k8s-sg" {
   

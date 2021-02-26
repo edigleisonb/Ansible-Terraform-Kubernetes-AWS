@@ -10,8 +10,11 @@
     - git
 
 - name: Install requirements for module kubernetes.k8s
-  shell:
-    cmd: pip3 install -y openshift pyyaml
+  pip:
+    name:
+    - openshift 
+    - pyyaml
+    executable: pip3
 
 - name: Download Repository Ingress Controller (Nginx)
   shell:
