@@ -9,7 +9,7 @@ aws configure
 ```
 ssh-keygen -t rsa -b 4096
 ```
-**Step 3:. Create Vms (Terraform).**
+**Step 3:. Create VMs (Terraform).**
 ```
 terraform init
 terraform plan
