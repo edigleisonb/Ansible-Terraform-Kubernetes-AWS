@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: edi-svc
+  namespace: devops-edi
+spec:
+  selector:
+    app: wp-edi
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http

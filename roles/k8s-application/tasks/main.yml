@@ -1,0 +1,58 @@
+- name: copy templates k8s and certs
+  copy:
+    src: /home/ubuntu/Teste_DevOps/K8s-templates
+    dest: /root
+
+- name: Install pip3
+  apt:
+    pkg: 
+    - python3-pip
+    - git
+
+- name: Install requirements for module kubernetes.k8s
+  shell:
+    cmd: pip3 install -y openshift pyyaml
+
+- name: Download Repository Ingress Controller (Nginx)
+  shell:
+    cmd: git clone https://github.com/nginxinc/kubernetes-ingress/
+    chdir: /root
+
+- name: Checkout in branch
+  shell:
+    cmd: cd /root/kubernetes-ingress/deployments && git checkout v1.9.0
+
+- name: Deploy Ingress Controller (Nginx)
+  community.kubernetes.k8s:
+    state: present
+    src: "{{ item }}"
+  loop:
+    - /root/kubernetes-ingress/deployments/common/ns-and-sa.yaml
+    - /root/kubernetes-ingress/deployments/rbac/rbac.yaml
+    - /root/kubernetes-ingress/deployments/common/default-server-secret.yaml
+    - /root/kubernetes-ingress/deployments/common/nginx-config.yaml
+    - /root/kubernetes-ingress/deployments/common/ingress-class.yaml
+    - /root/kubernetes-ingress/deployments/daemon-set/nginx-ingress.yaml
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+
+- name: Deploying an Application
+  community.kubernetes.k8s:
+    state: present
+    src: "{{ item }}"
+  loop:
+    - /root/K8s-templates/namespace-edi.json
+    - /root/K8s-templates/wp-deployment.yaml
+    - /root/K8s-templates/wp-service.yaml
+    - /root/K8s-templates/wp-mariadb.yaml
+    - /root/K8s-templates/wp-mariadb-service.yaml
+    - /root/K8s-templates/wp-ingress.yaml
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+
+- name: Creating the Kubernetes Secrets
+  shell:
+    cmd: kubectl create secret generic my-certs -n devops-edi --from-file=tls.crt=server.crt --from-file=tls.key=server.key --from-file=ca.crt=ca.crt
+    chdir: /root/K8s-templates/certs
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf

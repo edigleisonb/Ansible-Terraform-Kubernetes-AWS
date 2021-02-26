@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: edi-ingress
+  namespace: devops-edi
+spec:
+  rules:
+  - host: edi.devops.com
+    http:
+      paths:
+      - backend:
+          serviceName: edi-svc
+          servicePort: 80
+        path: /
+  tls:
+  - hosts:
+    - edi.devops.com
+    secretName: my-certs
